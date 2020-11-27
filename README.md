@@ -20,8 +20,10 @@ $ onos> logout
   
 $ cd ~/workspace/dynamic_routing/src  
 $ sudo mn --custom network_booter.py --topo linear-test --controller remote,172.17.0.5 --nolistenport --mac --link=tc  
-  
-  
+$ mininet> pingall  
+
+New Terminal:
+$ cd ~/workspace/dynamic_routing/src    
 $ python3 main.py  
 
 
@@ -34,5 +36,4 @@ The 'link=tclink' is needed to allow the topology to set up bandwidth and link d
 parameters should be assigned randomly (or statically for testing). The network_booter.py file holds a very basic
 topology which can be tested. 
 
-Testing gitignore
 
