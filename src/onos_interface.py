@@ -12,6 +12,40 @@ import matplotlib.pyplot
 from pprint import pprint
 from requests.auth import HTTPBasicAuth
 
+
+def get_hosts(_print = False):
+	out = subprocess.Popen(['onos', ONOS_IP, 'hosts', '-j',], \
+				stdout=subprocess.PIPE, \
+				stderr=subprocess.STDOUT)
+	stdout, stderr = out.communicate()
+
+	res = stdout.decode('utf-8')
+	res = res.replace("true", "True")
+	res = res.replace("false", "False")
+	
+	res_dict = eval(res)
+	if _print:
+		pprint(res_dect)
+
+	return res_dict
+
+def get_devices(_print = False):
+	out = subprocess.Popen(['onos', ONOS_IP, 'devices', '-j',], \
+				stdout=subprocess.PIPE, \
+				stderr=subprocess.STDOUT)
+	stdout, stderr = out.communicate()
+
+	res = stdout.decode('utf-8')
+	res = res.replace("true", "True")
+	res = res.replace("false", "False")
+
+	res_dict = eval(res)
+	if _print:
+		pprint(res_dect)
+
+	return res_dict
+
+
 def get_links(_print = False):
 	out = subprocess.Popen(['onos', ONOS_IP, 'links', '-j',], \
 				stdout=subprocess.PIPE, \
@@ -27,6 +61,7 @@ def get_links(_print = False):
 		pprint(res_dect)
 
 	return res_dict
+
 	
 def get_flows(_print = False):
 
