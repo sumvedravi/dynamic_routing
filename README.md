@@ -23,3 +23,14 @@ $ sudo mn --custom network_booter.py --topo linear-test --controller remote,172.
   
   
 $ python3 main.py  
+
+
+# Additional Information
+
+The '--mac' parameter is included so that each host device maintains easy mac id's to read numbered starting from 0.
+Though this is a nice feature, it is no longer needed since the program is no longer static bound to mac id's.  
+
+The 'link=tclink' is needed to allow the topology to set up bandwidth and link delays. These bw and delay 
+parameters should be assigned randomly (or statically for testing). The network_booter.py file holds a very basic
+topology which can be tested. 
+

@@ -26,9 +26,12 @@ class linear_topology(Topo):
 		self.addLink(s2, h2)
 		#self.addLink(s3, h3)
 
-		f1 = open('net.conf', 'w')
-		f1.write('data\n')
-		f1.write('data2\n')
-		f1.close()
+		config_file = open('links.config', 'w')
+
+		config_file.write('s 1 s, 2 10 10\n') 	#{dev type} {id} {dev type} {id} {bandwidth} {delay} 
+		config_file.write('h 1 s 1 -1 0\n') 	#{dev type} {id} {dev type} {id} {bandwidth} {delay} 
+		config_file.write('h 2 s 2 -1 0\n') 	#{dev type} {id} {dev type} {id} {bandwidth} {delay} 
+
+		config_file.close()
 
 topos = { 'linear-test': linear_topology }

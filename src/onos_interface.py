@@ -13,6 +13,12 @@ from pprint import pprint
 from requests.auth import HTTPBasicAuth
 
 
+def add_flow(_print = False):
+	return None
+
+def delete_flow(_print = False):
+	return None
+
 def get_hosts(_print = False):
 	out = subprocess.Popen(['onos', ONOS_IP, 'hosts', '-j',], \
 				stdout=subprocess.PIPE, \
@@ -80,6 +86,8 @@ def get_flows(_print = False):
 
 
 def get_stats(_print = False):
+	# for some reason they did not implement the json return functionality ... so the -j 
+	# option for json output does not work. Returned string must be parsed manually
 
 	out = subprocess.Popen(['onos', ONOS_IP, 'portstats', '-j'], \
 				stdout=subprocess.PIPE, \
