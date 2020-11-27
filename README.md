@@ -34,3 +34,5 @@ The 'link=tclink' is needed to allow the topology to set up bandwidth and link d
 parameters should be assigned randomly (or statically for testing). The network_booter.py file holds a very basic
 topology which can be tested. 
 
+Testing gitignore
+
