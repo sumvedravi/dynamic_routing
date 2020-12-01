@@ -1,6 +1,8 @@
 # prerequsite
 ONOS at least 3.0.8 
+
 Mininet at least 2.3.0d6 
+
 Linux OS(at least Ubuntu 16.04.7 LTS) 
 
 # dynamic_routing
