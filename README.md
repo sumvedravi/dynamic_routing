@@ -2,7 +2,11 @@
 ONOS at least 3.0.8  
 Mininet at least 2.3.0d6  
 Linux OS(at least Ubuntu 16.04.7 LTS)  
-
+Pacakges : python3-matplotlib, networkx
+  sudo apt-get install python3-matplotlib  
+  sudo apt install python3-pip
+  sudo pip3 install networkx
+  
 # dynamic_routing
 ONOS + Mininet Simulated Network Architecture with Dynamic Routing Protocol 
 
