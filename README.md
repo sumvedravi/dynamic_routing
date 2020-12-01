@@ -8,7 +8,7 @@ start up onos gui
 
 $ cd ~/onos-app-samples/ifwd  
 $ onos-app 172.17.0.5 install! ./target/onos-app-ifwd-1.9.0-SNAPSHOT.oar   
-$ onos  
+$ onos 172.17.0.5 
 $ onos> apps -a -s  
 $ onos> app deactivate org.onosproject.fwd  
 $ onos> app activate org.onosproject.ifwd  
