@@ -1,10 +1,19 @@
+# initial vars
+from global_vars import *
 from config import *
-from onos_interface import *
+
+# onos interaction
 from onos_topo import *
+from onos_interface import *
+
+# real-time monitoring
+from link_monitor import *
 from flow_monitor import *
 from portstat_monitor import *
-from update_onos_topo import *
+
+# dynamic route engine
 from cal_route import *
+
 
 import time
 import _thread
@@ -24,11 +33,6 @@ from requests.auth import HTTPBasicAuth
 			
 
 if __name__ == '__main__':
-	hosts = [] 	#format	[host1 mac, host2 mac, ...] 
-	devices = [] 	#format [dev1 id, dev2 id, ...]
-	links = [] 	#format [(src device , src port (int), dst device, dst port (int)), ...]
-	graph = nx.Graph()
-	
 	init_topo(hosts, devices, links, graph)
 	draw_topo(graph, hosts, devices)
 

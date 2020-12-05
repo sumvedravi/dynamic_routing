@@ -34,10 +34,6 @@ def add_flow(src_mac, dst_mac, in_port, out_port, priority = 100, _print = False
 # device id must be in form 'of:00000000000000xx', where xx is the device number
 # flow id, is of form: 92042317780586387 .. this id can be found from get_flows() output dict 
 def delete_flow(device_id, flow_id, _print = False):
-
-	DEVICEID = 'of:0000000000000001'
-	FLOWID = '92042317780586387'
-
 	get_url = 'http://%s:%d/onos/v1/flows/%s/%s' % (ONOS_IP, ONOS_PORT, device_id, flow_id)
 	reply = rq.delete(get_url, auth = HTTPBasicAuth(ONOS_USER, ONOS_PASS))
 

@@ -7,7 +7,6 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 
-
 def get_links_config():
 	config_file = open('links.config', 'r')
 	lines = config_file.readlines()

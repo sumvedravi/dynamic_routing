@@ -11,7 +11,7 @@ from requests.auth import HTTPBasicAuth
 
 
 DEVICEID = 'of:0000000000000001'
-FLOWID = '92042317780586387'
+FLOWID = '50384021227409299'
 
 get_url = 'http://%s:%d/onos/v1/flows/%s/%s' % (ONOS_IP, ONOS_PORT, DEVICEID, FLOWID)
 reply = rq.delete(get_url, auth = HTTPBasicAuth(ONOS_USER, ONOS_PASS))
