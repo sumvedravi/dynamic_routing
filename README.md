@@ -29,7 +29,7 @@ $ onos> imr:startmon {app id of imr} org.onosproject.ifwd
 $ onos> logout  
   
 $ cd ~/workspace/dynamic_routing/src  
-$ sudo mn --custom network_booter.py --topo linear-test --controller remote,172.17.0.5 --nolistenport --mac --link=tc  
+$ sudo python network_booter.py 
 $ mininet> pingall  
 
 New Terminal:
