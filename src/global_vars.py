@@ -1,6 +1,7 @@
 hosts = [] 	#format	[host1 mac, host2 mac, ...] 
 devices = [] 	#format [dev1 id, dev2 id, ...]
-links = [] 	#format [(src device , src port (int), dst device, dst port (int)), ...]
+links = [] 	#format {src_dev: {dst_dev:{src_port: port_in, dst_port: port_out }, dst_dev2:{} }}
+		#old - format [src device , src port (int), dst device, dst port (int)), ...]
 link_stats = {} #format {
 			 #'src_device-dst_device': { calculated_bw_being_used, number_of_flows, current_link_delay},
 			 #'src_device-dst_device': { calculated_bw_being_used, number_of_flows, current_link_delay},
@@ -11,30 +12,40 @@ graph = nx.Graph()
 
 
 #all_shortest_paths() = if multiple paths are of equal length then give all those paths back
-
 #shortest_path = gives top shortest
-
-
 #init_flow_paths_var();
 
 '''
+
 flow_paths = { 
-	        'src_host-dst_host': {
+	        'src_host_mac': {
+			'dst_host_mac': {
 			active: True/False
 			path_index: index_value_of_shortest_path
 			paths: [ path1=(dev_a, dev_b, ... ), path2=() ] #these are shortest paths available
 			path_values: [ path1_val, path2_val, ... ]  # calculated path efficency values 
 			flowId: [(deviceID, flowID), (deviceID2, flowID), ... ] #for the selected path (from path_index) keep a list of all device + flowID pairs
 		
-		},
-		
-	        'src_host-dst_host': {
+			},
+			'dst_host_mac': {
 			active: True/False
 			path_index: index_value_of_shortest_path
 			paths: [ path1=(dev_a, dev_b, ... ), path2=() ] #these are shortest paths available
 			path_values: [ path1_val, path2_val, ... ]  # calculated path efficency values 
 			flowId: [(deviceID, flowID), (deviceID2, flowID), ... ] #for the selected path (from path_index) keep a list of all device + flowID pairs
 		
+			}	
+		 },
+		
+	        'src_host2_mac: {
+			'dst_host_mac': {
+			active: True/False
+			path_index: index_value_of_shortest_path
+			paths: [ path1=(dev_a, dev_b, ... ), path2=() ] #these are shortest paths available
+			path_values: [ path1_val, path2_val, ... ]  # calculated path efficency values 
+			flowId: [(deviceID, flowID), (deviceID2, flowID), ... ] #for the selected path (from path_index) keep a list of all device + flowID pairs
+		
+			},
 		}
 }
 
