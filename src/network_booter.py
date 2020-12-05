@@ -45,15 +45,19 @@ if __name__ == '__main__':
 	setLogLevel('info')
 	topo = linear_topology()
 
-	net = Mininet(topo=topo, controller=RemoteController, link=TCLink, listenPort=None, autoSetMacs=True)
-	c1 = net.addController('c1', controller=RemoteController, ip="172.17.0.5")
+	net = Mininet(topo=topo, controller=RemoteController("c0", ip="172.17.0.5"), link=TCLink, listenPort=None, autoSetMacs=True)
 
 	net.start()
 	h1, h2 = net.get('h1', 'h2')
+	s1, s2 = net.get('s1', 's2')
+
 	h1.cmd('python3 link_delay_check.py 1 2 &')
 	h2.cmd('python3 link_delay_check.py 2 1 &')
 	#h2.cmd('ping 10.0.0.2')
 
+	#s1.cmd('ip addr add 10.0.0.101/24 brd + dev lo')
+	s1.setIP('10.0.0.101', intf = 'lo')
+	s2.setIP('10.0.0.102', intf = 'lo')
 	net.interact()
 
 	net.stop()
