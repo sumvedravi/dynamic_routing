@@ -4,6 +4,7 @@ from mininet.net import Mininet
 from mininet.link import TCLink
 from mininet.log import setLogLevel, info
 from mininet.node import Controller, RemoteController
+from time import sleep
 
 class linear_topology(Topo):
 	
@@ -28,10 +29,34 @@ class linear_topology(Topo):
 
 		config_file = open('links.config', 'w')
 
-		config_file.write('s 1 s, 2 10 10\n') 	#{dev type} {id} {dev type} {id} {bandwidth} {delay} 
+		config_file.write('s 1 s 2 10 10\n') 	#{dev type} {id} {dev type} {id} {bandwidth} {delay} 
 		config_file.write('h 1 s 1 -1 0\n') 	#{dev type} {id} {dev type} {id} {bandwidth} {delay} 
 		config_file.write('h 2 s 2 -1 0\n') 	#{dev type} {id} {dev type} {id} {bandwidth} {delay} 
 
+		# update link delay dynamically
 		config_file.close()
 
+		
+
 topos = { 'linear-test': linear_topology }
+
+if __name__ == '__main__':
+	#setLogLevel('debug')
+	setLogLevel('info')
+	topo = linear_topology()
+
+	net = Mininet(topo=topo, controller=RemoteController, link=TCLink, listenPort=None, autoSetMacs=True)
+	c1 = net.addController('c1', controller=RemoteController, ip="172.17.0.5")
+
+	net.start()
+	h1, h2 = net.get('h1', 'h2')
+	h1.cmd('python3 link_delay_check.py 1 2 &')
+	h2.cmd('python3 link_delay_check.py 2 1 &')
+	#h2.cmd('ping 10.0.0.2')
+
+	net.interact()
+
+	net.stop()
+
+	info("done!\n")
+
