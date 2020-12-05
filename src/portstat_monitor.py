@@ -27,11 +27,18 @@ def portstat_check(hosts, devices, links, graph):
 			max_bw = link[4] * 1000 * 1000
 			#print(typeof(stats))
 			curr_bw = (stats[link[1]][link[2]]['bytesRx'] + stats[link[1]][link[2]]['bytesTx']) / 8
-			print(src_sw, dest_sw, max_bw, curr_bw)
 			links[ind][7] = curr_bw / 1000000 - links[ind][7]
 
-	# get current bw per links
-	# 
-	# get delay
-	# is the delay value custom? or 
+			# get delay
+			for line in reversed(list(open("link_delay.log"))):
+				#print(line.rstrip(), " each line")
+				line = line.rstrip()
+				line_src_sw = line.split(" ")[0]
+				line_dest_sw = line.split(" ")[1]
+				line_delay = line.split(" ")[2]
+				if line_src_sw == src_sw[1] and line_dest_sw == dest_sw[1]:
+					print("match")
+					links[ind][8] = line_delay
+					break
+			print(src_sw, dest_sw, max_bw, curr_bw, links[ind][8])
 
