@@ -1,0 +1,20 @@
+======= wonseok todo =======
+1) check link status update links status (up/down) and update graph 
+2) get link delays (for all up links)
+3) get link bw being used (for all up links)
+
+4) normalise delay values 
+5) normalize bw values
+6) efficency = alpha*bw_norm + beta*delay_norm
+7) update graph edge with efficency value
+
+
+
+======= sumved todo =======
+
+delete all old flow ids from previous path
+add flows for each device in path
+
+
+intent flow delay 
+intent flow bandwidth

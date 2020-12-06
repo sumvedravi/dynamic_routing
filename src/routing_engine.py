@@ -7,13 +7,14 @@ from time import sleep
 import networkx as nx
 import matplotlib.pyplot as plt
 from networkx.algorithms.shortest_paths.generic import shortest_path
+from networkx.algorithms.shortest_paths.generic import all_shortest_paths
 
 
 flow_id_list = []
 
-def flow_check(flow_paths):
+def check_flows(flow_paths):
+	new_flow = {}
 	flows_dict = get_flows()
-
 	for device_flow in flows_dict:
 		device_id = device_flow['device']
 		flow_count = device_flow['flowCount']
@@ -37,16 +38,20 @@ def flow_check(flow_paths):
 
 			port_ = flow['selector']['criteria'][0]['port']
 			type_ = flow['selector']['criteria'][0]['type']
-			srcmac_ = flow['selector']['criteria'][2]['mac']
-			dstmac_ = flow['selector']['criteria'][1]['mac']
+			src_mac_ = flow['selector']['criteria'][2]['mac']
+			dst_mac_ = flow['selector']['criteria'][1]['mac']
 			treatmentport_ = flow['treatment']['instructions'][0]['port']
 			treatmenttype_ = flow['treatment']['instructions'][0]['type']
 
 
 			if srcmac_ not in flow_paths.keys():
+				new_flows[srcmac_] = {}
+
 				flow_paths[srcmac_] = {}
 			
 			if dstmac_ not in flow_paths[srcmac_].keys():
+				new_flows[srcmac_][dstmac_] = {}
+
 				flow_paths[srcmac_][dstmac_] = {}
 				flow_paths[srcmac_][dstmac_]['active'] = True
 				flow_paths[srcmac_][dstmac_]['path_index'] = -1
@@ -54,14 +59,36 @@ def flow_check(flow_paths):
 				flow_paths[srcmac_][dstmac_]['path_values'] = []
 				flow_paths[srcmac_][dstmac_]['flow_ids'] = []
 
+			flow_paths[srcmac_][dstmac_]['in_port'] = port_
+			flow_paths[srcmac_][dstmac_]['out_port'] = treatmentport_
+
 			flow_paths[srcmac_][dstmac_]['flow_ids'].append( (device_id, flow_id) )
 			
 
-	return flow_paths
+	return new_flows
 
+	
+def dynamic_routing(flow_paths, links, graph):
+	while True:
+		new_flows = check_flows(flow_paths)
+		
+		# for each new flow detected add flow to each device based on best path
+		for src_dev in new_flows:
+			for dst_dev in new_flows[src_dev]:
+				path = shortest_path(graph, src_dev, dst_dev, weight = 'weight')
+				path_values = calc_path_values(paths, links)
 
+				flow_paths[src_dev][dst_dev]['paths'] = paths
+				flow_paths[src_dev][dst_dev]['path_values'] = 
 
+				add_all_flows(src_dev, dst_dev, path)
 
+		# for each existing flow check if there is a new better path if so change to that
+		#for src_dev in flow_paths;
+		 #... 
+				
+
+'''
 def get_shortest_paths(hosts, devices, links, graph):
 	pre_short_path = {}
 	while True:
@@ -95,5 +122,5 @@ def get_shortest_paths(hosts, devices, links, graph):
 		pre_short_path = short_path
 		sleep(1)
 		break
-
+'''
 

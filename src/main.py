@@ -42,13 +42,17 @@ if __name__ == '__main__':
 
 	draw_topo(graph, hosts, devices)
 
-	#while True:
+	while True:
 		#portstat_check(hosts, devices, links, graph)
 		#flow_check(flow_paths)
 		#link_check(links)
 		#update_topo()
 		#sleep(1)
-
+		
+		#check_links(links)
+		#check_portstats() --> updates bw values
+		#check_delays()
+		
 	
 	
 
