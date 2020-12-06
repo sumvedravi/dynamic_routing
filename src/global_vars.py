@@ -9,9 +9,9 @@ links = {}	#format {src_dev:
 			    #dst_dev:{
 				#con_type = 'h-s' , 's-s', 's-h'
 				#status: '1 (for up) or 0 (for down)
-				#link_flow_count: val
 				#max_bw: val
 				#bw: realtime values
+				#link_flow_count: val
 				#delay: realtime values
 				#delay_norm: normailzed delay value
 				#bw_norm: normalized bw value

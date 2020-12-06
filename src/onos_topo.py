@@ -68,8 +68,9 @@ def init_topo(hosts, devices, links, graph):
 		links[host_mac][dst_dev]['bw'] = -1
 		links[host_mac][dst_dev]['delay'] = -1
 		links[host_mac][dst_dev]['link_flow_count'] = -1
-		links[host_mac][dst_dev]['efficency_raw'] = -1
-		links[host_mac][dst_dev]['efficency_norm'] = -1
+		links[host_mac][dst_dev]['bw_norm'] = -1
+		links[host_mac][dst_dev]['delay_norm'] = -1
+		links[host_mac][dst_dev]['efficency'] = -1
 		links[host_mac][dst_dev]['src_port'] = -1
 		links[host_mac][dst_dev]['dst_port'] = dst_port
 		
@@ -103,8 +104,10 @@ def init_topo(hosts, devices, links, graph):
 		links[src_dev][dst_dev]['bw'] = -1
 		links[src_dev][dst_dev]['delay'] = -1
 		links[src_dev][dst_dev]['link_flow_count'] = -1
-		links[src_dev][dst_dev]['efficency_raw'] = -1
-		links[src_dev][dst_dev]['efficency_norm'] = -1
+		links[src_dev][dst_dev]['bw_norm'] = -1
+		links[src_dev][dst_dev]['delay_norm'] = -1
+		links[src_dev][dst_dev]['efficency'] = -1
+
 		links[src_dev][dst_dev]['src_port'] = src_port
 		links[src_dev][dst_dev]['dst_port'] = dst_port
 		
