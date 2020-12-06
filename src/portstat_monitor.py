@@ -3,12 +3,11 @@ from onos_interface import *
 from onos_topo import *
 from time import sleep
 
-
+import sys, re, os
+import subprocess
 import networkx as nx
 import matplotlib.pyplot as plt
 from pprint import pprint
-
-import re
 
 
 def portstat_check(hosts, devices, links, graph):
@@ -19,6 +18,9 @@ def portstat_check(hosts, devices, links, graph):
 	pprint(stats)
 	# get max bw per links
 	ind = -1
+	# file merge
+	os.system('cat ../log/link_delay_* > ../log/link_delay.log')
+	
 	for link in links:
 		ind = ind + 1
 		if (link[0] == 'switch-switch'):
@@ -30,7 +32,7 @@ def portstat_check(hosts, devices, links, graph):
 			links[ind][7] = curr_bw / 1000000 - links[ind][7]
 
 			# get delay
-			for line in reversed(list(open("link_delay.log"))):
+			for line in reversed(list(open("../log/link_delay.log"))):
 				#print(line.rstrip(), " each line")
 				line = line.rstrip()
 				line_src_sw = line.split(" ")[0]
