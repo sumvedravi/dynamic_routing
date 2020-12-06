@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from networkx.algorithms.shortest_paths.generic import shortest_path
 
 
-def cal_route(hosts, devices, links, graph):
+def get_shortest_paths(hosts, devices, links, graph):
 	pre_short_path = {}
 	while True:
 		short_path = {}

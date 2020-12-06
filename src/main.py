@@ -1,18 +1,18 @@
 from config import *
+from global_vars import *
 from onos_interface import *
-from onos_topo import *
-from flow_monitor import *
-from portstat_monitor import *
-from update_onos_topo import *
-from cal_route import *
-from link_monitor import *
+#from onos_topo import *
+#from flow_monitor import *
+#from portstat_monitor import *
+#from routing_engine import *
+#from link_monitor import *
 
 import time
 import _thread
 from threading import Thread
-import sys
 
 import os
+import sys
 import json
 import logging
 import subprocess
@@ -25,20 +25,30 @@ from requests.auth import HTTPBasicAuth
 
 
 if __name__ == '__main__':
-	hosts = [] 	#format	[host1 mac, host2 mac, ...] 
-	devices = [] 	#format [dev1 id, dev2 id, ...]
-	links = [] 	#format [(src device , src port (int), dst device, dst port (int)), ...]
-	graph = nx.Graph()
+	#hosts = [] 	#format	[host1 mac, host2 mac, ...] 
+	#devices = [] 	#format [dev1 id, dev2 id, ...]
+	#links = [] 	#format [(src device , src port (int), dst device, dst port (int), status(1 up, 0 down)), ...]
+	#graph = nx.Graph()
 	
-	init_topo(hosts, devices, links, graph)
+	#init_topo(hosts, devices, links, graph)
+	pprint(get_flows())
+	#flow_paths = flow_check(flow_paths)
+
+	#pprint(links)
+		
+	print('************************************************************************')
+	print('************************************************************************')
+
+	#pprint(flow_paths)
+
 	#draw_topo(graph, hosts, devices)
 
-	while True:
+	#while True:
 		#portstat_check(hosts, devices, links, graph)
-		#flow_check()
-		link_check(links)
+		#flow_check(flow_paths)
+		#link_check(links)
 		#update_topo()
-		sleep(1)
+		#sleep(1)
 
 	
 	

@@ -1,6 +1,6 @@
 from config import *
-from onos_interface import *
 from onos_topo import *
+from onos_interface import *
 
 
 import networkx as nx
@@ -55,9 +55,23 @@ def init_topo(hosts, devices, links, graph):
 		dst_port = int(host['locations'][0]['port'] )
 
 		bandwidth, delay = find_config_match(links_config, ['h', 's'], [host_mac, dst_dev])
+		
+		if host_mac not in links.keys():
+			links[host_mac] = {}
 
-		links.append( ('host-switch', host_mac, -1, dst_dev, dst_port, bandwidth, delay) )
+		if dst_dev not in links[host_mac].keys():
+			links[host_mac][dst_dev] = {}
 
+		links[host_mac][dst_dev]['conn_type'] = 'h-s'
+		links[host_mac][dst_dev]['max_bw'] = bandwidth
+		links[host_mac][dst_dev]['cur_bw'] = -1
+		links[host_mac][dst_dev]['link_flow_count'] = -1
+		links[host_mac][dst_dev]['src_port'] = -1
+		links[host_mac][dst_dev]['dst_port'] = dst_port
+		
+		# MAY NEED TO ADD LINK IN REVERSE s->h .. .right now it is h->s ,
+		# other links are listed bidirectional (from s1->s2 and s2->s1)			
+			
 		hosts.append(host_mac)
 			
 
@@ -73,7 +87,20 @@ def init_topo(hosts, devices, links, graph):
 
 		bandwidth, delay = find_config_match(links_config, ['s', 's'], [src_dev, dst_dev])
 
-		links.append( ('switch-switch', src_dev, src_port, dst_dev, dst_port, bandwidth, delay) )
+		if src_dev not in links.keys():
+			links[src_dev] = {}
+
+		if dst_dev not in links[src_dev].keys():
+			links[src_dev][dst_dev] = {}
+
+		links[src_dev][dst_dev]['conn_type'] = 's-s'
+		links[src_dev][dst_dev]['max_bw'] = bandwidth
+		links[src_dev][dst_dev]['cur_bw'] = -1
+		links[src_dev][dst_dev]['link_flow_count'] = -1
+		links[src_dev][dst_dev]['src_port'] = src_port
+		links[src_dev][dst_dev]['dst_port'] = dst_port
+		
+		
 	
 	devices = list(set(devices))
 	links= list(set(links))

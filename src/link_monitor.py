@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from pprint import pprint
 
 
-def link_check(links):
+def link_check(links, graph):
 	# down method : mininet> link s1 s2 down/up
 	#print(links)
 	link_count = 0
@@ -19,5 +19,6 @@ def link_check(links):
 	links_status = get_links()
 	link_count_curr = len(links_status)
 	#print(link_count, link_count_curr)
-	if link_count > link_count_curr:
-		print("link count is changed, call cal_route and reroute")
+	#if link_count > link_count_curr:
+	#	print("link count is changed, call cal_route and reroute")
+
