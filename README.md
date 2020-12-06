@@ -28,8 +28,11 @@ $ onos> apps -a -s
 $ onos> imr:startmon {app id of imr} org.onosproject.ifwd  
 $ onos> logout  
   
-$ cd ~/workspace/dynamic_routing/src  
-$ sudo python network_booter.py 
+$ cd ~/workspace/dynamic_routing/src
+choose one among three topology  
+(1) linear    : $ sudo python network_booter.py 
+(2) triangle  : $ sudo python network_booter_triangletopo.py 
+(3) nine node : $ sudo python network_booter_ninetopo.py 
 $ mininet> pingall  
 
 New Terminal:
