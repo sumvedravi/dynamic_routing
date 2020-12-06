@@ -15,16 +15,17 @@ def flow_check(flow_paths):
 		device_id = device_flow['device']
 		flow_count = device_flow['flowCount']
 
-		if device_id not in flows_dict.keys():
-			flows_dict[device_id] = {}
+		if device_id not in flow_paths.keys():
+			flow_paths[device_id] = {}
 
-		flows_dict[device_id]['dev_flow_count'] = flow_count
+		flow_paths[device_id]['dev_flow_count'] = flow_count
 
 		for flow in device_flow['flows']:
 			flow_id = flow['id']
 			flow_treatment_inst = flow['treatment']['instructions'][0]['port']
-			if flow_treatment_inst != 'CONTROLLER':
+			if flow_treatment_inst == 'CONTROLLER':
 				continue
+
 			port_ = flow['selector']['criteria'][0]['port']
 			type_ = flow['selector']['criteria'][0]['type']
 			srcmac_ = flow['selector']['criteria'][2]['mac']

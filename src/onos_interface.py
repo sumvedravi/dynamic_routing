@@ -105,8 +105,9 @@ def get_flows(_print = False):
 
 	res_dict = eval(res)
 	if _print:
-		pprint(res_dect)
+		pprint(res_dict)
 
+	return res_dict
 
 def get_stats(_print = False):
 	# for some reason they did not implement the json return functionality ... so the -j 

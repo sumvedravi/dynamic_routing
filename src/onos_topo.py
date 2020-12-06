@@ -103,14 +103,15 @@ def init_topo(hosts, devices, links, graph):
 		
 	
 	devices = list(set(devices))
-	links= list(set(links))
 
 	for host in hosts:
 		graph.add_node(host, type='host')
 	for device in devices:
 		graph.add_node(device, type='device')
-	for link in links:
-		graph.add_edge(link[1], link[3], weight = 1.0) #can add weight based on delay
+
+	for src_dev in links:
+		for dst_dev in links[src_dev]:	
+			graph.add_edge(src_dev, dst_dev, weight = 1.0) #can add weight based on delay
 	
 def draw_topo(graph, hosts, devices):
 	pos = nx.fruchterman_reingold_layout(graph)

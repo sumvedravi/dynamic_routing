@@ -1,11 +1,9 @@
-from config import *
 from global_vars import *
 from onos_interface import *
-#from onos_topo import *
-#from flow_monitor import *
-#from portstat_monitor import *
-#from routing_engine import *
-#from link_monitor import *
+from onos_topo import *
+from portstat_monitor import *
+from routing_engine import *
+from link_monitor import *
 
 import time
 import _thread
@@ -30,18 +28,19 @@ if __name__ == '__main__':
 	#links = [] 	#format [(src device , src port (int), dst device, dst port (int), status(1 up, 0 down)), ...]
 	#graph = nx.Graph()
 	
-	#init_topo(hosts, devices, links, graph)
-	pprint(get_flows())
-	#flow_paths = flow_check(flow_paths)
+	#print(get_flows())
+	init_topo(hosts, devices, links, graph)
+	
+	flow_paths = flow_check(flow_paths)
 
 	#pprint(links)
 		
-	print('************************************************************************')
-	print('************************************************************************')
+	#print('************************************************************************')
+	#print('************************************************************************')
 
 	#pprint(flow_paths)
 
-	#draw_topo(graph, hosts, devices)
+	draw_topo(graph, hosts, devices)
 
 	#while True:
 		#portstat_check(hosts, devices, links, graph)
