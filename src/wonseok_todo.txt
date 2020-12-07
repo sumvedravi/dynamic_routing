@@ -2,6 +2,7 @@
 1) check link status update links status (up/down) and update graph 
 2) get link delays (for all up links)
    - in links dict, hosts' port is -1. Is it should be 1?
+   - in links dict, add 'bw_before' to keep tracking diff bw(bps)
 3) get link bw being used (for all up links)
 
 4) normalise delay values 
