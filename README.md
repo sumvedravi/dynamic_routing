@@ -6,6 +6,7 @@ Pacakges : python3-matplotlib, networkx
   sudo apt-get install python3-matplotlib  
   sudo apt install python3-pip
   sudo pip3 install networkx
+  sudo pip install sklearn  
   
 # dynamic_routing
 ONOS + Mininet Simulated Network Architecture with Dynamic Routing Protocol 
