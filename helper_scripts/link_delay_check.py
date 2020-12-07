@@ -7,31 +7,28 @@ from time import sleep
 
 def main(argv):
 	if len(sys.argv) == 1:
-		print("usage : delay_check.py <src host number> <dst host number>")
+		print("usage : delay_check.py <src dev> <dst dev>")
+		print("usage : delay_check.py s1 s2")
 		sys.exit()
-	str = '10.0.0.'
+	ip_pfx = '10.0.0.'
+	src_dev_str = argv[1]
+	dst_dev_str = argv[2]
+	src_dev_no = int(argv[1][1:])
+	dst_dev_no = int(argv[2][1:])
+	dst_dev_ip = ip_pfx + str(dst_dev_no)
 	while True:
-		src_host = argv[1]
-		dst_host = argv[2]
-		dst_host_ip = str + dst_host
-		#print(dst_host_ip)
-		#print(dst_host_ip)
 
-		stream = os.popen('ping -c3 ' + dst_host_ip)
+		stream = os.popen('ping -c3 ' + dst_dev_ip)
 		output = stream.read()
-		#process = subprocess.Popen(['ping', '-c3', dst_host_ip ],
-		#		     stdout=subprocess.PIPE, 
-		#		     stderr=subprocess.PIPE)
-		#stdout, stderr = process.communicate()
-		#print(stdout, stderr)
-		#stdout = stdout.decode("utf-8")
+
 		# ping avg index is 4
 		print(output)
 		print(output.split("/"))
+		# validation out and skip invalid form 
 		if len(output.split("/")) != 7:
 			continue
-		f = open('../log/link_delay_' + src_host + '_' + dst_host + '.log', 'a')
-		f.write(src_host +" "+ dst_host+ " "+ output.split("/")[4] + "\n")
+		f = open('../log/link_delay_' + src_dev_str + '_' + dst_dev_str + '.log', 'a')
+		f.write(src_dev_str +" "+ dst_dev_str + " "+ output.split("/")[4] + "\n")
 		f.close()
 				
 if __name__ == "__main__":
