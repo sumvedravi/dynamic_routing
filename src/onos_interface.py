@@ -164,6 +164,8 @@ def get_stats(_print = False):
 			stats[last_device][last_port]['Dur'] = val
 
 	if _print:
-		pprint(res_dect)
+		pprint(stats)
+		
+	return stats
 
 	
