@@ -10,37 +10,44 @@ import matplotlib.pyplot as plt
 from pprint import pprint
 
 
-def portstat_check(hosts, devices, links, graph):
-	before_bw = 0
-	#format [(dev id, flow id, port no, type, src mac, dst mac, out port, out type), ...]
-	print(links)
+def check_portstats(links):
 	stats = get_stats()
-	pprint(stats)
 	# get max bw per links
-	ind = -1
+	
 	# file merge
 	os.system('cat ../log/link_delay_* > ../log/link_delay.log')
 	
-	for link in links:
-		ind = ind + 1
-		if (link[0] == 'switch-switch'):
-			src_sw = 's' + re.findall('\d+', link[1])[0].lstrip('0') + '-' + str(link[2])
-			dest_sw = 's' + re.findall('\d+', link[3])[0].lstrip('0') + '-' + str(link[4])
-			max_bw = link[4] * 1000 * 1000
-			#print(typeof(stats))
-			curr_bw = (stats[link[1]][link[2]]['bytesRx'] + stats[link[1]][link[2]]['bytesTx']) / 8
-			links[ind][7] = curr_bw / 1000000 - links[ind][7]
-
-			# get delay
-			for line in reversed(list(open("../log/link_delay.log"))):
-				#print(line.rstrip(), " each line")
-				line = line.rstrip()
-				line_src_sw = line.split(" ")[0]
-				line_dest_sw = line.split(" ")[1]
-				line_delay = line.split(" ")[2]
-				if line_src_sw == src_sw[1] and line_dest_sw == dest_sw[1]:
-					print("match")
-					links[ind][8] = line_delay
-					break
-			print(src_sw, dest_sw, max_bw, curr_bw, links[ind][8])
+	for src_dev in stats:
+		for src_port in stats[src_dev]:	
+			curr_bw = (stats[src_dev][src_port]['bytesRx'] + \
+				stats[src_dev][src_port]['bytesTx']) * 8 / 1000 / 1000
+			for dst_dev in links[src_dev]:
+				if links[src_dev][dst_dev]['src_port'] == src_port:
+					bw_per_sec = curr_bw - links[src_dev][dst_dev]['bw_before']
+					links[src_dev][dst_dev]['bw_before'] = curr_bw
+					links[src_dev][dst_dev]['bw'] = bw_per_sec
+					if dst_dev[0:2] != 'of':
+						links[dst_dev][src_dev]['bw_before'] = curr_bw
+						links[dst_dev][src_dev]['bw'] = bw_per_sec
+	
+					# get delay	
+					# helper script : link_check_delay.py h1 s1
+					for line in reversed(list(open("../log/link_delay.log"))):
+						#print(line.rstrip(), " each line")
+						line = line.rstrip()
+						line_src_dev = line.split(" ")[0]
+						line_dst_dev = line.split(" ")[1]
+						line_delay = line.split(" ")[2]
+						# device and switch should be no more than 10.
+						if line_src_dev[0:1] == 's':
+							line_src_dev = 'of:000000000000000' + line_src_dev[1:2]
+						else:
+							line_src_dev = '00:00:00:00:00:0' + line_src_dev[1:2]
+						if line_dst_dev[0:1] == 's':
+							line_dst_dev = 'of:000000000000000' + line_dst_dev[1:2]
+						else:
+							line_dst_dev = '00:00:00:00:00:0' + line_dst_dev[1:2]
+						if line_src_dev == src_dev and line_dst_dev == dst_dev:
+							links[dst_dev][src_dev]['delay'] = line_delay
+							links[src_dev][dst_dev]['delay'] = line_delay
 
