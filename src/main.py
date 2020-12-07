@@ -31,9 +31,9 @@ if __name__ == '__main__':
 	#print(get_flows())
 	init_topo(hosts, devices, links, graph)
 	
-	flow_paths = flow_check(flow_paths)
+	#flow_paths = flow_check(flow_paths)
 
-	#pprint(links)
+	pprint(links)
 		
 	#print('************************************************************************')
 	#print('************************************************************************')
@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
 	draw_topo(graph, hosts, devices)
 
-	while True:
+	#while True:
 		#portstat_check(hosts, devices, links, graph)
 		#flow_check(flow_paths)
 		#link_check(links)
@@ -57,7 +57,8 @@ if __name__ == '__main__':
 	
 
 
-	'''while True:
+	'''
+	while True:
 		print("-----------------------------------------")
 		print(" 1: update topology			")
 		print(" 2: calculate route                      ")

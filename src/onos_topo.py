@@ -76,6 +76,26 @@ def init_topo(hosts, devices, links, graph):
 		
 		# MAY NEED TO ADD LINK IN REVERSE s->h .. .right now it is h->s ,
 		# other links are listed bidirectional (from s1->s2 and s2->s1)			
+
+
+		if dst_dev not in links.keys():
+			links[dst_dev] = {}
+
+		if host_mac not in links[dst_dev].keys():
+			links[dst_dev][host_mac] = {}
+		
+		links[dst_dev][host_mac]['conn_type'] = 's-h'
+		links[dst_dev][host_mac]['status'] = 1
+		links[dst_dev][host_mac]['max_bw'] = bandwidth
+		links[dst_dev][host_mac]['bw'] = -1
+		links[dst_dev][host_mac]['delay'] = -1
+		links[dst_dev][host_mac]['link_flow_count'] = -1
+		links[dst_dev][host_mac]['bw_norm'] = -1
+		links[dst_dev][host_mac]['delay_norm'] = -1
+		links[dst_dev][host_mac]['efficency'] = -1
+		links[dst_dev][host_mac]['src_port'] = dst_port #switched for switch -> host connection
+		links[dst_dev][host_mac]['dst_port'] = -1
+				
 			
 		hosts.append(host_mac)
 			

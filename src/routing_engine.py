@@ -64,11 +64,19 @@ def check_flows(flow_paths):
 
 			flow_paths[srcmac_][dstmac_]['flow_ids'].append( (device_id, flow_id) )
 			
-
 	return new_flows
 
-	
+
+#def add_all_flows(src_dev, dst_dev, path):
+
+#def delete_all_flows(src_dev, dst_dev, flow_paths):
+	#device_id, flow_id in flow_paths[src_dev][dst_dev]['flow_ids']:
+		#flow_paths[src_dev][dst_dev]['flow_ids'].remove( (device_id
+		#print('h')
+
 def dynamic_routing(flow_paths, links, graph):
+	print('hi')
+	'''
 	while True:
 		new_flows = check_flows(flow_paths)
 		
@@ -76,16 +84,15 @@ def dynamic_routing(flow_paths, links, graph):
 		for src_dev in new_flows:
 			for dst_dev in new_flows[src_dev]:
 				path = shortest_path(graph, src_dev, dst_dev, weight = 'weight')
-				path_values = calc_path_values(paths, links)
-
-				flow_paths[src_dev][dst_dev]['paths'] = paths
-				flow_paths[src_dev][dst_dev]['path_values'] = 
-
+				flow_paths[src_dev][dst_dev]['path'] = path
 				add_all_flows(src_dev, dst_dev, path)
 
 		# for each existing flow check if there is a new better path if so change to that
-		#for src_dev in flow_paths;
-		 #... 
+		for src_dev in flow_paths;
+			for dst_dev in flow_paths[src_dev]:
+				new_path = shortest_path(graph, src_dev, dst_dev, weight = 'weight')
+	'''				
+		
 				
 
 '''

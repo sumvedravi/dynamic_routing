@@ -1,7 +1,7 @@
 import networkx as nx
 
 
-hosts = [] 	#format	[host1 mac, host2 mac, ...] 
+hosts = [] 	#format	[host1 mac, host2 mac, ...]
 devices = [] 	#format [dev1 id, dev2 id, ...]
 
 links = {}	#format {src_dev: 
@@ -47,30 +47,25 @@ flow_paths = {
 	        'src_mac': {
 			'dst_mac': {
 			active: True/False
-			path_index: index_value_of_shortest_path
-			paths: [ path1=(dev_a, dev_b, ... ), path2=() ] #these are shortest paths available
-			path_values: [ path1_val, path2_val, ... ]  # calculated path efficency values 
+			path: [ path1=(dev_a, dev_b, ... ), path2=() ] 		#these are shortest paths available
+			path_efficency: val 					# calculated path efficency value 
 			flowId: [(deviceID, flowID), (deviceID2, flowID), ... ] #for the selected path (from path_index) keep a list of all device + flowID pairs
-		
 			},
+
 			'dst_mac': {
 			active: True/False
-			path_index: index_value_of_shortest_path
-			paths: [ path1=(dev_a, dev_b, ... ), path2=() ] #these are shortest paths available
-			path_values: [ path1_val, path2_val, ... ]  # calculated path efficency values 
-			flowId: [(deviceID, flowID), (deviceID2, flowID), ... ] #for the selected path (from path_index) keep a list of all device + flowID pairs
-		
+			path: [ path1=(dev_a, dev_b, ... ), path2=() ] 		#these are shortest paths available
+			path_efficency: val 					# calculated path efficency value 
+			flowId: [(deviceID, flowID), (deviceID2, flowID), ... ] #for the selected path (from path_index) keep a list of all device + flowID pairs		
 			}	
 		 },
 		
 	        'src2_mac: {
 			'dst_mac': {
 			active: True/False
-			path_index: index_value_of_shortest_path
-			paths: [ path1=(dev_a, dev_b, ... ), path2=() ] #these are shortest paths available
-			path_values: [ path1_val, path2_val, ... ]  # calculated path efficency values 
+			path: [ path1=(dev_a, dev_b, ... ), path2=() ] 		#these are shortest paths available
+			path_efficency: val 					# calculated path efficency value 
 			flowId: [(deviceID, flowID), (deviceID2, flowID), ... ] #for the selected path (from path_index) keep a list of all device + flowID pairs
-		
 			},
 		}
 }
