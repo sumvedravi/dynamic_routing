@@ -17,8 +17,8 @@ links = {}	#format {src_dev:
 				#bw_norm: normalized bw value
 				#efficency: val
 
-				#src_port: port_in
-				#dst_port: port_out 
+				#src_port: src device port 
+				#dst_port: dst device port
 			    #}, 
 			    #dst_dev2:{..} 
 			 #}
@@ -41,32 +41,36 @@ graph = nx.Graph()
 '''
 
 flow_paths = { 
-		'dev_id': {
-			'dev_flow_count': val
-		},
 	        'src_mac': {
 			'dst_mac': {
-			active: True/False
-			path: [ path1=(dev_a, dev_b, ... ), path2=() ] 		#these are shortest paths available
-			path_efficency: val 					# calculated path efficency value 
-			flowId: [(deviceID, flowID), (deviceID2, flowID), ... ] #for the selected path (from path_index) keep a list of all device + flowID pairs
-			},
+			packets: 						# number of packets gone through the flow
+			last_changed: 						# number of program iterations since packets value has changed (sum over all flows) 
+			path: [ path1=(dev_a, dev_b, ... ), path2=() ] 		# shortest path available
+			path_efficency: val 					# calculated path efficency value  
+			flow_ids: {deviceID: { flow_id: flowID,
+					     packets: num_pkts 
+					     last_changed: val }} 		# for the selected path (from path_index) keep a list of all devices and flow data			},
 
 			'dst_mac': {
-			active: True/False
-			path: [ path1=(dev_a, dev_b, ... ), path2=() ] 		#these are shortest paths available
-			path_efficency: val 					# calculated path efficency value 
-			flowId: [(deviceID, flowID), (deviceID2, flowID), ... ] #for the selected path (from path_index) keep a list of all device + flowID pairs		
+			packets: 						# number of packets gone through the flow
+			last_changed: 						# number of program iterations since packets value has changed (sum over all flows)
+			path: [ path1=(dev_a, dev_b, ... ), path2=() ] 		# shortest path available
+			path_efficency: val 					# calculated path efficency value  
+			flow_ids: {deviceID: { flow_id: flowID,
+					     packets: num_pkts 
+					     last_changed: val }} 		# for the selected path (from path_index) keep a list of all devices and flow data
 			}	
 		 },
 		
 	        'src2_mac: {
 			'dst_mac': {
-			active: True/False
-			path: [ path1=(dev_a, dev_b, ... ), path2=() ] 		#these are shortest paths available
-			path_efficency: val 					# calculated path efficency value 
-			flowId: [(deviceID, flowID), (deviceID2, flowID), ... ] #for the selected path (from path_index) keep a list of all device + flowID pairs
-			},
+			packets: 						# number of packets gone through the flow
+			last_changed: 						# number of program iterations since packets value has changed (sum over all flows)
+			path: [ path1=(dev_a, dev_b, ... ), path2=() ] 		# shortest path available
+			path_efficency: val 					# calculated path efficency value  
+			flow_ids: {deviceID: { flow_id: flowID,
+					     packets: num_pkts 
+					     last_changed: val }} 		# for the selected path (from path_index) keep a list of all devices and flow data			},
 		}
 }
 
