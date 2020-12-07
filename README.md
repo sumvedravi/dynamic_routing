@@ -41,7 +41,7 @@ $ python3 main.py
 
 # Evaluation
 linear topo  
-$ cd ~/workspace/dynamic_routing/helper_script
+$ cd ~/workspace/dynamic_routing/helper_scripts  
 mininet> xterm h1 h2  
 node h1> python3 check_link_delay.py s1 s2  
 
