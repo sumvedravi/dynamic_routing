@@ -74,9 +74,8 @@ def init_topo(hosts, devices, links, graph):
 		links[host_mac][dst_dev]['src_port'] = -1
 		links[host_mac][dst_dev]['dst_port'] = dst_port
 		
-		# MAY NEED TO ADD LINK IN REVERSE s->h .. .right now it is h->s ,
-		# other links are listed bidirectional (from s1->s2 and s2->s1)			
 
+		# add flip of link, originally h->s, now also adds s->h
 
 		if dst_dev not in links.keys():
 			links[dst_dev] = {}
