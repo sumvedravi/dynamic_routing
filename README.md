@@ -31,12 +31,12 @@ $ onos> logout
   
 $ cd ~/workspace/dynamic_routing/src
 choose one among three topology  
-(1) linear    : $ sudo python network_booter.py 
-(2) triangle  : $ sudo python network_booter_triangletopo.py 
-(3) nine node : $ sudo python network_booter_ninetopo.py 
+(1) linear    : $ sudo python network_booter.py  
+(2) triangle  : $ sudo python network_booter_triangletopo.py  
+(3) nine node : $ sudo python network_booter_ninetopo.py  
 $ mininet> pingall  
 
-New Terminal:
+New Terminal:  
 $ cd ~/workspace/dynamic_routing/src    
 $ python3 main.py  
 
