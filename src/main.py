@@ -4,6 +4,7 @@ from onos_topo import *
 from portstat_monitor import *
 from routing_engine import *
 from link_monitor import *
+from flow_monitor import *
 
 import time
 import _thread
