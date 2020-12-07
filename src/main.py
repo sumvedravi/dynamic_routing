@@ -27,14 +27,14 @@ if __name__ == '__main__':
 	#devices = [] 	#format [dev1 id, dev2 id, ...]
 	#links = [] 	#format [(src device , src port (int), dst device, dst port (int), status(1 up, 0 down)), ...]
 	#graph = nx.Graph()
-	
+
 	#print(get_flows())
 	init_topo(hosts, devices, links, graph)
-	
-	#flow_paths = flow_check(flow_paths)
 
-	pprint(links)
-		
+	flow_paths = flow_check(flow_paths)
+
+	#pprint(links)
+
 	#print('************************************************************************')
 	#print('************************************************************************')
 
@@ -42,43 +42,14 @@ if __name__ == '__main__':
 
 	draw_topo(graph, hosts, devices)
 
-	#while True:
+	while True:
 		#portstat_check(hosts, devices, links, graph)
 		#flow_check(flow_paths)
 		#link_check(links)
 		#update_topo()
 		#sleep(1)
-		
+
 		#check_links(links)
 		#check_portstats() --> updates bw values
 		#check_delays()
-		
-	
-	
-
-
-	'''
-	while True:
-		print("-----------------------------------------")
-		print(" 1: update topology			")
-		print(" 2: calculate route                      ")
-		print("                                         ")
-		print(" q: quit					")
-		print("-----------------------------------------")
-
-		inp = input('choose menu : ')
-		if inp == '1':
-			print("update_topo")
-			update_topo(hosts, devices, links, graph)
-		if inp == '2':
-			print("cal_route")
-			cal_route(hosts, devices, links, graph)
-		if inp == 'q':
-			break
-
-	for link in links:
-		print(link)
-        '''
-
-
 
