@@ -42,14 +42,23 @@ $ python3 main.py
 
 # Evaluation
 <<<linear topo>>>  
-$ cd ~/workspace/dynamic_routing/helper_scripts  
+$ cd ~/workspace/dynamic_routing/src  
+$ sudo python network_booter.py   
 mininet> xterm h1 h2  
-per link  
+per link run helper scripts  
 node h1> ../helper_scripts/python3 check_link_delay.py s1 s2  
-
-
+  
+<<<triangle topo>>>  
+$ cd ~/workspace/dynamic_routing/src  
+$ sudo python network_booter_triangletopo.py   
+mininet> xterm h1 h2 h3  
+per link run helper scripts  
+node h1> ../helper_scripts/python3 check_link_delay.py s1 s2  
+node h2> ../helper_scripts/python3 check_link_delay.py s2 s3  
+node h3> ../helper_scripts/python3 check_link_delay.py s3 s1  
+  
 new terminal  
-$ python3 main.py 
+$ python3 main.py  
 
 # Additional Information
 
