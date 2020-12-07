@@ -41,10 +41,12 @@ $ cd ~/workspace/dynamic_routing/src
 $ python3 main.py  
 
 # Evaluation
-linear topo  
+<<<linear topo>>>  
 $ cd ~/workspace/dynamic_routing/helper_scripts  
 mininet> xterm h1 h2  
-node h1> python3 check_link_delay.py s1 s2  
+per link  
+node h1> ../helper_scripts/python3 check_link_delay.py s1 s2  
+
 
 new terminal  
 $ python3 main.py 
