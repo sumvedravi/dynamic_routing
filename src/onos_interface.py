@@ -15,7 +15,7 @@ from requests.auth import HTTPBasicAuth
 
 # src_mac, dst_mac are strings 
 # in_port, out_port are ints
-def add_flow(src_mac, dst_mac, in_port, out_port, priority = 100, _print = False):
+def add_flow(device_id, src_mac, dst_mac, in_port, out_port, priority = 100, _print = False):
 	data = { \
 		'isPermanent': True, \
 		'priority': priority, \
@@ -24,6 +24,8 @@ def add_flow(src_mac, dst_mac, in_port, out_port, priority = 100, _print = False
 	}
 
 	json_data = json.dumps(data)	
+
+	get_url = 'http://%s:%d/onos/v1/flows/%s' % (ONOS_IP, ONOS_PORT, device_id)
 	reply = rq.post(get_url, auth = HTTPBasicAuth(ONOS_USER, ONOS_PASS), data = json_data)
 
 	if _print:

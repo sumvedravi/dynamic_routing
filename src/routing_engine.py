@@ -37,7 +37,7 @@ def check_flows(flow_paths):
 				flow_paths[src_mac][dst_mac] = {}
 				flow_paths[src_mac][dst_mac]['path'] = []
 				flow_paths[src_mac][dst_mac]['flow_ids'] = {}
-				flow_paths[src_mac][dst_mac]['last_changed'] += 1
+				flow_paths[src_mac][dst_mac]['last_changed'] = -1
 
 			if device_id not in flow_paths[src_mac][dst_mac]['flow_ids'].keys():
 				flow_paths[src_mac][dst_mac]['flow_ids'][device_id] = {}
@@ -81,34 +81,37 @@ def add_all_flows(src_mac, dst_mac, path, links):
 		path.clear()
 		return None
 
-	src_dev = path[i]
-	dev = path[i+1]
-	dst_dev = path[i+2]
+	# dev is the device the flow is being installed on
+	src_dev = path[0]
+	dev = path[1]
+	dst_dev = path[2]
 
 	# for device what port does data come in from link and what port does it go out		
 	in_port = links[src_dev][dev]['dst_port']
 	out_port = links[dev][dst_dev]['src_port']
 	
-	add_flow(src_mac, dst_mac, in_port, out_port)
+	add_flow(dev, src_mac, dst_mac, in_port, out_port)
 	
 	path.remove(src_dev)
-	add_all_flow(src_mac, dst_mac, path, links)
+	add_all_flows(src_mac, dst_mac, path, links)
 
 
 # for src_host to dst_host connection delete all intermediate flows 
 # resets path parameter for connection to none		
 def delete_all_flows(src_mac, dst_mac, flow_paths):
-	for device_id in flow_paths[src_mac][dst_mac]['flow_ids'].keys():
-		device_data = flow_paths[src_mac][dst_mac]['flow_ids'].pop(device_id)
+	for device_id in list(flow_paths[src_mac][dst_mac]['flow_ids'].keys()):
+		device_data = flow_paths[src_mac][dst_mac]['flow_ids'][device_id]
 		flow_id = device_data['flow_id']
 		delete_flow(device_id, flow_id)
 		flow_paths[src_mac][dst_mac]['path'] = []
-
+		del flow_paths[src_mac][dst_mac]['flow_ids'][device_id]
 # for all src_host to dst_host connections delete all intermediate flows
 # delte all src_host to dst_host connections in flow_paths
 def delete_all_connections(flow_paths):
-	for src_mac in flow_paths.keys():
-		for dst_mac in flow_paths[src_mac].keys():
+	for src_mac in list(flow_paths.keys()):
+		for dst_mac in list(flow_paths[src_mac].keys()):
+			print(flow_paths[src_mac][dst_mac]['flow_ids'].keys())
+			print('*****')
 			delete_all_flows(src_mac, dst_mac, flow_paths)
 			del flow_paths[src_mac][dst_mac]
 		del flow_paths[src_mac]
@@ -120,12 +123,12 @@ def delete_all_connections(flow_paths):
 #	(b) then add all new flows per device
 #	(c) get new flow ids that have been assigned in previous step
 def dynamic_routing(flow_paths, links, graph):
-	check_flows(flow_paths)
-	
+	# must check_flow() prior to running this function
+
 	# a new flow will automatically use new_path since old_path will be = []
 	# for each existing flow check if there is a new better path if so change to that
-	for src_mac in flow_paths.keys():
-		for dst_mac in flow_paths[src_mac].keys():
+	for src_mac in list(flow_paths.keys()):
+		for dst_mac in list(flow_paths[src_mac].keys()):
 			last_changed_sum = flow_paths[src_mac][dst_mac]['last_changed']
 
 			if last_changed_sum > 20:

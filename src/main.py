@@ -23,13 +23,18 @@ from requests.auth import HTTPBasicAuth
 
 
 if __name__ == '__main__':
+
 	init_topo(hosts, devices, links, graph)
+	draw_topo(graph, hosts, devices)
 
 
-	#print('************************************************************************')
+	# first pass cycle after pingall is called ... then wipe connections to wait
+	# for new connections to come in
+	check_link(links, graph)	
+	check_portstats(links, graph)
+	check_flows(flow_paths)
+	delete_all_connections(flow_paths)
 
-
-	#draw_topo(graph, hosts, devices)
 
 	while True:
 		# check link up and down
@@ -37,8 +42,11 @@ if __name__ == '__main__':
 		
 		# check delay and bw per link
 		check_portstats(links, graph)
-
+		
+		# check current flows 
 		check_flows(flow_paths)
-		update_topo()
+
+		# update paths and flows
+		dynamic_routing(flow_paths, links, graph)
 
 		sleep(1)
