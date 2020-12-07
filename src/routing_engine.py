@@ -139,8 +139,9 @@ def dynamic_routing(flow_paths, links, graph):
 			new_path = shortest_path(graph, src_mac, dst_mac, weight = 'weight')
 			old_path = flow_paths[src_mac][dst_mac]['path']
 
-			if new_path != old_path:
-				print('new path for {} to {}: {}'.format(src_mac, dst_mac, new_path))
+			if new_path != old_path:				
 				flow_paths[src_mac][dst_mac]['path'] = new_path
 				delete_all_flows(src_mac, dst_mac, flow_paths)
 				add_all_flows(src_mac, dst_mac, new_path.copy(), links)				
+
+				print('new path for {} to {}: \n\t{}'.format(src_mac, dst_mac, new_path))
