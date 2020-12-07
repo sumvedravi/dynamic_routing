@@ -21,6 +21,11 @@ def flow_check(flow_paths):
 		flow_paths[device_id]['dev_flow_count'] = flow_count
 
 		for flow in device_flow['flows']:
+			# validation add
+			if 'port' not in flow['treatment']['instructions'][0] or \
+				'type' not in flow['treatment']['instructions'][0]:
+				continue
+
 			flow_id = flow['id']
 			flow_treatment_inst = flow['treatment']['instructions'][0]['port']
 			if flow_treatment_inst == 'CONTROLLER':
