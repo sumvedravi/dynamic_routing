@@ -1,7 +1,7 @@
 import networkx as nx
 
 
-hosts = [] 	#format	[host1 mac, host2 mac, ...] 
+hosts = [] 	#format	[host1 mac, host2 mac, ...]
 devices = [] 	#format [dev1 id, dev2 id, ...]
 
 links = {}	#format {src_dev: 
@@ -39,10 +39,10 @@ graph = nx.Graph()
 			 #'src_device-dst_device': { calculated_bw_being_used, number_of_flows, current_link_delay},
 
 '''
+
 flow_paths = { 
 	        'src_mac': {
 			'dst_mac': {
-<<<<<<< HEAD
 			packets: 						# number of packets gone through the flow
 			last_changed: 						# number of program iterations since packets value has changed (sum over all flows) 
 			path: [ path1=(dev_a, dev_b, ... ), path2=() ] 		# shortest path available
@@ -59,28 +59,11 @@ flow_paths = {
 			flow_ids: {deviceID: { flow_id: flowID,
 					     packets: num_pkts 
 					     last_changed: val }} 		# for the selected path (from path_index) keep a list of all devices and flow data
-=======
-			active: True/False
-			path_index: index_value_of_shortest_path
-			paths: [ path1=(dev_a, dev_b, ... ), path2=() ] #these are shortest paths available
-			path_values: [ path1_val, path2_val, ... ]  # calculated path efficency values 
-			flowId: [(deviceID, flowID), (deviceID2, flowID), ... ] #for the selected path (from path_index) keep a list of all device + flowID pairs
-		
-			},
-			'dst_mac': {
-			active: True/False
-			path_index: index_value_of_shortest_path
-			paths: [ path1=(dev_a, dev_b, ... ), path2=() ] #these are shortest paths available
-			path_values: [ path1_val, path2_val, ... ]  # calculated path efficency values 
-			flowId: [(deviceID, flowID), (deviceID2, flowID), ... ] #for the selected path (from path_index) keep a list of all device + flowID pairs
-		
->>>>>>> 9d43d81aa6209f0b8adad2fb0947ca8494725bd0
 			}	
 		 },
 		
 	        'src2_mac: {
 			'dst_mac': {
-<<<<<<< HEAD
 			packets: 						# number of packets gone through the flow
 			last_changed: 						# number of program iterations since packets value has changed (sum over all flows)
 			path: [ path1=(dev_a, dev_b, ... ), path2=() ] 		# shortest path available
@@ -88,17 +71,9 @@ flow_paths = {
 			flow_ids: {deviceID: { flow_id: flowID,
 					     packets: num_pkts 
 					     last_changed: val }} 		# for the selected path (from path_index) keep a list of all devices and flow data			},
-=======
-			active: True/False
-			path_index: index_value_of_shortest_path
-			paths: [ path1=(dev_a, dev_b, ... ), path2=() ] #these are shortest paths available
-			path_values: [ path1_val, path2_val, ... ]  # calculated path efficency values 
-			flowId: [(deviceID, flowID), (deviceID2, flowID), ... ] #for the selected path (from path_index) keep a list of all device + flowID pairs
-		
-			},
->>>>>>> 9d43d81aa6209f0b8adad2fb0947ca8494725bd0
 		}
 }
+
 	1. use: link_monitor 
 		if changes -> update graph + update paths through calc_route
 	2. use: portstat_monitor
@@ -116,8 +91,10 @@ flow_paths = {
 		
 	Link	
 	DevA -> DevB
+
 	path is full distance
 	Src->A->B->D->Target
+
 	Link Efficency = (Link_max_bandwidth - Sum(all flows on link)]/num_flows 
 	Path Efficency = Link_delays_normalized to [0-1] + Sum(Link Efficencies values in path normalized to [0-1])
 	
