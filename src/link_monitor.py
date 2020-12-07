@@ -9,7 +9,7 @@ from pprint import pprint
 
 
 def link_check(links, graph):
-	# down method : mininet> link s1 s2 down/up
+	# down method : mininet> link s1 s2 down /up
 	curr_links_status = get_links()
 	for src in links:
 		# we assume that host link always up
