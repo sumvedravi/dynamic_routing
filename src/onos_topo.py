@@ -1,6 +1,6 @@
 from config import *
-from onos_interface import *
 from onos_topo import *
+from onos_interface import *
 
 
 import networkx as nx
@@ -55,9 +55,48 @@ def init_topo(hosts, devices, links, graph):
 		dst_port = int(host['locations'][0]['port'] )
 
 		bandwidth, delay = find_config_match(links_config, ['h', 's'], [host_mac, dst_dev])
+		
+		if host_mac not in links.keys():
+			links[host_mac] = {}
 
-		links.append( ('host-switch', host_mac, -1, dst_dev, dst_port, bandwidth, delay) )
+		if dst_dev not in links[host_mac].keys():
+			links[host_mac][dst_dev] = {}
 
+		links[host_mac][dst_dev]['conn_type'] = 'h-s'
+		links[host_mac][dst_dev]['status'] = 1
+		links[host_mac][dst_dev]['max_bw'] = bandwidth
+		links[host_mac][dst_dev]['bw'] = -1
+		links[host_mac][dst_dev]['delay'] = -1
+		links[host_mac][dst_dev]['link_flow_count'] = -1
+		links[host_mac][dst_dev]['bw_norm'] = -1
+		links[host_mac][dst_dev]['delay_norm'] = -1
+		links[host_mac][dst_dev]['efficency'] = -1
+		links[host_mac][dst_dev]['src_port'] = -1
+		links[host_mac][dst_dev]['dst_port'] = dst_port
+		
+		# MAY NEED TO ADD LINK IN REVERSE s->h .. .right now it is h->s ,
+		# other links are listed bidirectional (from s1->s2 and s2->s1)			
+
+
+		if dst_dev not in links.keys():
+			links[dst_dev] = {}
+
+		if host_mac not in links[dst_dev].keys():
+			links[dst_dev][host_mac] = {}
+		
+		links[dst_dev][host_mac]['conn_type'] = 's-h'
+		links[dst_dev][host_mac]['status'] = 1
+		links[dst_dev][host_mac]['max_bw'] = bandwidth
+		links[dst_dev][host_mac]['bw'] = -1
+		links[dst_dev][host_mac]['delay'] = -1
+		links[dst_dev][host_mac]['link_flow_count'] = -1
+		links[dst_dev][host_mac]['bw_norm'] = -1
+		links[dst_dev][host_mac]['delay_norm'] = -1
+		links[dst_dev][host_mac]['efficency'] = -1
+		links[dst_dev][host_mac]['src_port'] = dst_port #switched for switch -> host connection
+		links[dst_dev][host_mac]['dst_port'] = -1
+				
+			
 		hosts.append(host_mac)
 			
 
@@ -73,17 +112,36 @@ def init_topo(hosts, devices, links, graph):
 
 		bandwidth, delay = find_config_match(links_config, ['s', 's'], [src_dev, dst_dev])
 
-		links.append( ('switch-switch', src_dev, src_port, dst_dev, dst_port, bandwidth, delay) )
+		if src_dev not in links.keys():
+			links[src_dev] = {}
+
+		if dst_dev not in links[src_dev].keys():
+			links[src_dev][dst_dev] = {}
+
+		links[src_dev][dst_dev]['conn_type'] = 's-s'
+		links[src_dev][dst_dev]['status'] = 1
+		links[src_dev][dst_dev]['max_bw'] = bandwidth
+		links[src_dev][dst_dev]['bw'] = -1
+		links[src_dev][dst_dev]['delay'] = -1
+		links[src_dev][dst_dev]['link_flow_count'] = -1
+		links[src_dev][dst_dev]['bw_norm'] = -1
+		links[src_dev][dst_dev]['delay_norm'] = -1
+		links[src_dev][dst_dev]['efficency'] = -1
+
+		links[src_dev][dst_dev]['src_port'] = src_port
+		links[src_dev][dst_dev]['dst_port'] = dst_port
+		
 	
 	devices = list(set(devices))
-	links= list(set(links))
 
 	for host in hosts:
 		graph.add_node(host, type='host')
 	for device in devices:
 		graph.add_node(device, type='device')
-	for link in links:
-		graph.add_edge(link[1], link[3], weight = 1.0) #can add weight based on delay
+
+	for src_dev in links:
+		for dst_dev in links[src_dev]:	
+			graph.add_edge(src_dev, dst_dev, weight = 1.0) #can add weight based on delay
 	
 def draw_topo(graph, hosts, devices):
 	pos = nx.fruchterman_reingold_layout(graph)
