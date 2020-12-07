@@ -25,9 +25,11 @@ def check_portstats(links, graph):
 				stats[src_dev][src_port]['bytesTx']) * 8 / 1000 / 1000
 			for dst_dev in links[src_dev]:
 				if links[src_dev][dst_dev]['src_port'] == src_port:
+					max_bw = links[src_dev][dst_dev]['max_bw']
 					bw_per_sec = curr_bw - links[src_dev][dst_dev]['bw_before']
 					links[src_dev][dst_dev]['bw_before'] = curr_bw
 					links[src_dev][dst_dev]['bw'] = bw_per_sec
+					links[src_dev][dst_dev]['bw'] = bw_per_sec / max_bw
 					# onos portstat show only network devices' ports stats
 					# use h->s stats with the same value s->h
 					if dst_dev[0:2] != 'of':
