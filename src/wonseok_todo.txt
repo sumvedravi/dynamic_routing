@@ -1,8 +1,14 @@
 ======= wonseok todo =======
 1) check link status update links status (up/down) and update graph 
 2) get link delays (for all up links)
+   - in links dict, hosts' port is -1. Is it should be 1?
+   - in links dict, add 'bw_before' to keep tracking diff bw(bps)
 3) get link bw being used (for all up links)
-
+   - iperf can not increase delay ping test from swtich 
+   - iperf can     increase delay ping test from host 
+   - switch network namesapce same with host, but host network namespace is virtual network namespace.
+   - use host1 - host2 delay for switch1 - switch2
+   - assume host - switch delay 0.050ms(estimated avg value) by adding link_delay_default.log
 4) normalise delay values 
 5) normalize bw values
 6) efficency = alpha*bw_norm + beta*delay_norm
