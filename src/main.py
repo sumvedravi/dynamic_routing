@@ -4,7 +4,6 @@ from onos_topo import *
 from portstat_monitor import *
 from routing_engine import *
 from link_monitor import *
-from flow_monitor import *
 
 import time
 import _thread
@@ -26,24 +25,20 @@ from requests.auth import HTTPBasicAuth
 if __name__ == '__main__':
 	init_topo(hosts, devices, links, graph)
 
-	flow_paths = flow_check(flow_paths)
-
 
 	#print('************************************************************************')
-	#print('************************************************************************')
 
-	#pprint(flow_paths)
 
 	#draw_topo(graph, hosts, devices)
 
 	while True:
 		# check link up and down
-		#check_link(links, graph)
+		check_link(links, graph)
 		
 		# check delay and bw per link
-		#check_portstats(links, graph)
+		check_portstats(links, graph)
 
-		#flow_check(flow_paths)
-		#update_topo()
+		check_flows(flow_paths)
+		update_topo()
 
 		sleep(1)

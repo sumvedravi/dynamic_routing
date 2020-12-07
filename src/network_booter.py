@@ -51,8 +51,8 @@ if __name__ == '__main__':
 	h1, h2 = net.get('h1', 'h2')
 	s1, s2 = net.get('s1', 's2')
 
-	h1.cmd('python3 link_delay_check.py 1 2 &')
-	h2.cmd('python3 link_delay_check.py 2 1 &')
+	#h1.cmd('python3 link_delay_check.py 1 2 &')
+	#h2.cmd('python3 link_delay_check.py 2 1 &')
 	#h2.cmd('ping 10.0.0.2')
 
 	#s1.cmd('ip addr add 10.0.0.101/24 brd + dev lo')
