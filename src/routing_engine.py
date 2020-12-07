@@ -52,6 +52,28 @@ def check_flows(flow_paths):
 			flow_paths[src_mac][dst_mac]['flow_ids'][device_id]['flow_id'] = flow_id 
 
 
+# grab all new intermediate flow ids for a connection between 
+def get_new_flow_ids(src_mac, dst_mac, flow_paths)
+	flows_dict = get_flows()
+	for device_flow in flows_dict:
+		for flow in device_flow['flows']:
+			flow_treatment_inst = flow['treatment']['instructions'][0]['port']
+			
+			if flow_treatment_inst == 'CONTROLLER':
+				continue
+
+			src = flow['selector']['criteria'][2]['mac']
+			dst = flow['selector']['criteria'][1]['mac']
+			
+			if src != src_mac or dst != dst_mac:
+				continue
+
+			flow_id = flow['id']
+			device_id = flow['deviceId']
+
+			flow_id_list.append(flow_id)
+			flow_paths[src_mac][dst_mac]['flow_ids'][device_id] = flow_id
+
 # for src_host to dst_host connection add all intermediate flows 
 # function works recursively	
 def add_all_flows(src_mac, dst_mac, path, links):
@@ -112,4 +134,4 @@ def dynamic_routing(flow_paths, links, graph):
 				print('new path for {} to {}: {}'.format(src_mac, dst_mac, new_path)
 				flow_paths[src_mac][dst_mac]['path'] = new_path
 				delete_all_flows(src_mac, dst_mac, flow_paths)
-				add_all_flows(src_mac, dst_mac, new_path)
+				add_all_flows(src_mac, dst_mac, new_path)				
