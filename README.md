@@ -2,10 +2,10 @@
 ONOS at least 3.0.8  
 Mininet at least 2.3.0d6  
 Linux OS(at least Ubuntu 16.04.7 LTS)  
-Pacakges : python3-matplotlib, networkx
+Pacakges : python3-matplotlib, networkx  
   sudo apt-get install python3-matplotlib  
-  sudo apt install python3-pip
-  sudo pip3 install networkx
+  sudo apt install python3-pip  
+  sudo pip3 install networkx  
   sudo pip install sklearn  
   
 # dynamic_routing
