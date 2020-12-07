@@ -16,7 +16,7 @@ links = {}	#format {src_dev:
 				#delay_norm: normailzed delay value
 				#bw_norm: normalized bw value
 				#efficency: val
-
+				#packets: 
 				#src_port: src device port 
 				#dst_port: dst device port
 			    #}, 

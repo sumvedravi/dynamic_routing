@@ -4,18 +4,16 @@ from onos_topo import *
 from time import sleep
 
 
+from pprint import pprint
 import networkx as nx
 import matplotlib.pyplot as plt
 from networkx.algorithms.shortest_paths.generic import shortest_path
 from networkx.algorithms.shortest_paths.generic import all_shortest_paths
 
 
-flow_id_list = []
-
-
 # if new flow add to flow_paths so that the list of device_id's and flow_ids can be appended to
 # using this list of flow_ids the flows per device can be deleted and a new path with new flows can be added per device
-def check_flows(flow_paths):
+def check_flows(links, flow_paths):
 	flows_dict = get_flows()
 	for device_flow in flows_dict:
 		for flow in device_flow['flows']:
@@ -26,9 +24,11 @@ def check_flows(flow_paths):
 				continue
 
 			device_id = flow['deviceId']
-			packets = int(flow['packets'])
 			src_mac = flow['selector']['criteria'][2]['mac']
 			dst_mac = flow['selector']['criteria'][1]['mac']
+
+
+			cur_bw = int(links[src_mac][dst_mac]['bw'])
 
 			if src_mac not in flow_paths.keys():
 				flow_paths[src_mac] = {}
@@ -44,7 +44,7 @@ def check_flows(flow_paths):
 				flow_paths[src_mac][dst_mac]['flow_ids'][device_id]['packets'] = packets
 				flow_paths[src_mac][dst_mac]['flow_ids'][device_id]['last_changed'] = -1
 
-			if packets == flow_paths[src_mac][dst_mac]['flow_ids'][device_id]['packets']:
+			if cur_bw == 0:
 				flow_paths[src_mac][dst_mac]['flow_ids'][device_id]['last_changed'] += 1
 				flow_paths[src_mac][dst_mac]['last_changed'] += 1
 
@@ -71,7 +71,6 @@ def get_new_flow_ids(src_mac, dst_mac, flow_paths):
 			flow_id = flow['id']
 			device_id = flow['deviceId']
 
-			flow_id_list.append(flow_id)
 			flow_paths[src_mac][dst_mac]['flow_ids'][device_id] = flow_id
 
 # for src_host to dst_host connection add all intermediate flows 
@@ -103,15 +102,13 @@ def delete_all_flows(src_mac, dst_mac, flow_paths):
 		device_data = flow_paths[src_mac][dst_mac]['flow_ids'][device_id]
 		flow_id = device_data['flow_id']
 		delete_flow(device_id, flow_id)
-		flow_paths[src_mac][dst_mac]['path'] = []
+		#flow_paths[src_mac][dst_mac]['path'] = []
 		del flow_paths[src_mac][dst_mac]['flow_ids'][device_id]
 # for all src_host to dst_host connections delete all intermediate flows
 # delte all src_host to dst_host connections in flow_paths
 def delete_all_connections(flow_paths):
 	for src_mac in list(flow_paths.keys()):
 		for dst_mac in list(flow_paths[src_mac].keys()):
-			print(flow_paths[src_mac][dst_mac]['flow_ids'].keys())
-			print('*****')
 			delete_all_flows(src_mac, dst_mac, flow_paths)
 			del flow_paths[src_mac][dst_mac]
 		del flow_paths[src_mac]
@@ -131,17 +128,21 @@ def dynamic_routing(flow_paths, links, graph):
 		for dst_mac in list(flow_paths[src_mac].keys()):
 			last_changed_sum = flow_paths[src_mac][dst_mac]['last_changed']
 
+			print('{} : {} - last_changed: {}'.format(src_mac, dst_mac, last_changed_sum)
+
 			if last_changed_sum > 20:
-				delete_all_flows(src_mac, flow_paths)
+				delete_all_flows(src_mac, dst_mac, flow_paths)
 				del flow_paths[src_mac][dst_mac] # must remove full connection from list
 				continue
 
 			new_path = shortest_path(graph, src_mac, dst_mac, weight = 'weight')
 			old_path = flow_paths[src_mac][dst_mac]['path']
 
-			if new_path != old_path:				
+			if new_path != old_path:						
 				flow_paths[src_mac][dst_mac]['path'] = new_path
 				delete_all_flows(src_mac, dst_mac, flow_paths)
-				add_all_flows(src_mac, dst_mac, new_path.copy(), links)				
+				add_all_flows(src_mac, dst_mac, new_path.copy(), links)		
+				print('new path for {} to {}: \n\t{} \n\t{}'.format(\
+					src_mac, dst_mac, new_path, old_path))
 
-				print('new path for {} to {}: \n\t{}'.format(src_mac, dst_mac, new_path))
+

@@ -44,7 +44,7 @@ if __name__ == '__main__':
 		check_portstats(links, graph)
 		
 		# check current flows 
-		check_flows(flow_paths)
+		check_flows(links, flow_paths)
 
 		# update paths and flows
 		dynamic_routing(flow_paths, links, graph)
