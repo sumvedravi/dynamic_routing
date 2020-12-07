@@ -36,7 +36,6 @@ flow_paths = {
 			packets: 						# number of packets gone through the flow
 			last_changed: 						# number of program iterations since packets value has changed (sum over all flows) 
 			path: [ path1=(dev_a, dev_b, ... ), path2=() ] 		# shortest path available
-			path_efficency: val 					# calculated path efficency value  
 			flow_ids: {deviceID: { flow_id: flowID,
 					     packets: num_pkts 
 					     last_changed: val }} 		# for the selected path (from path_index) keep a list of all devices and flow data			},
@@ -45,7 +44,6 @@ flow_paths = {
 			packets: 						# number of packets gone through the flow
 			last_changed: 						# number of program iterations since packets value has changed (sum over all flows)
 			path: [ path1=(dev_a, dev_b, ... ), path2=() ] 		# shortest path available
-			path_efficency: val 					# calculated path efficency value  
 			flow_ids: {deviceID: { flow_id: flowID,
 					     packets: num_pkts 
 					     last_changed: val }} 		# for the selected path (from path_index) keep a list of all devices and flow data
@@ -57,7 +55,6 @@ flow_paths = {
 			packets: 						# number of packets gone through the flow
 			last_changed: 						# number of program iterations since packets value has changed (sum over all flows)
 			path: [ path1=(dev_a, dev_b, ... ), path2=() ] 		# shortest path available
-			path_efficency: val 					# calculated path efficency value  
 			flow_ids: {deviceID: { flow_id: flowID,
 					     packets: num_pkts 
 					     last_changed: val }} 		# for the selected path (from path_index) keep a list of all devices and flow data			},
