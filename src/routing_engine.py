@@ -98,7 +98,7 @@ def add_all_flows(src_mac, dst_mac, path, links):
 
 # for src_host to dst_host connection delete all intermediate flows 		
 def delete_all_flows(src_mac, dst_mac, flow_paths):
-	for device_id in flow_paths[src_mac][dst_mac]['flow_ids']:
+	for device_id in flow_paths[src_mac][dst_mac]['flow_ids'].keys():
 		device_data = flow_paths[src_mac][dst_mac]['flow_ids'].pop(device_id)
 		flow_id = device_data['flow_id']
 		flow_id_list.remove(flow_id)
@@ -106,8 +106,8 @@ def delete_all_flows(src_mac, dst_mac, flow_paths):
 
 # for all src_host to dst_host connections delete all intermediate flows
 def reset_flows(flow_paths):
-	for src_mac in flow_paths:
-		for dst_mac in flow_paths[src_mac]:
+	for src_mac in flow_paths.keys():
+		for dst_mac in flow_paths[src_mac].keys():
 			delete_all_flows(src_mac, dst_mac, flow_paths)
 
 # (1) update flow paths - get new flows if any 
@@ -121,12 +121,13 @@ def dynamic_routing(flow_paths, links, graph):
 	
 	# a new flow will automatically use new_path since old_path will be = []
 	# for each existing flow check if there is a new better path if so change to that
-	for src_mac in flow_paths:
-		for dst_mac in flow_paths[src_mac]:
+	for src_mac in flow_paths.keys():
+		for dst_mac in flow_paths[src_mac].keys():
 			last_changed_sum = flow_paths[src_mac][dst_mac]['last_changed']
 
 			if last_changed_sum > 20:
 				delete_all_flows(src_mac, flow_paths)
+				del flow_paths[src_mac][dst_mac] # must remove full connection from list
 				continue
 
 			new_path = shortest_path(graph, src_mac, dst_mac, weight = 'weight')
