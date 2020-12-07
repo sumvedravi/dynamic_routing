@@ -28,16 +28,6 @@ links = {}	#format {src_dev:
 flow_paths = {}			
 graph = nx.Graph()
 
-
-#all_shortest_paths() = if multiple paths are of equal length then give all those paths back
-#shortest_path = gives top shortest
-#init_flow_paths_var();
-#links = [] 	#format {src_dev: {dst_dev:{src_port: port_in, dst_port: port_out }, dst_dev2:{} }}
-		#old - format [src device , src port (int), dst device, dst port (int)), ...]
-#link_stats = {} #format {
-			 #'src_device-dst_device': { calculated_bw_being_used, number_of_flows, current_link_delay},
-			 #'src_device-dst_device': { calculated_bw_being_used, number_of_flows, current_link_delay},
-
 '''
 
 flow_paths = { 
