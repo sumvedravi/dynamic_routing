@@ -32,9 +32,9 @@ class triangle_topo(Topo):
 		config_file.write('s 1 s 2 1 100\n') 	#{dev type} {id} {dev type} {id} {bandwidth} {delay} 
 		config_file.write('s 2 s 3 10 1\n') 	#{dev type} {id} {dev type} {id} {bandwidth} {delay} 
 		config_file.write('s 1 s 3 10 1\n') 	#{dev type} {id} {dev type} {id} {bandwidth} {delay} 
-		config_file.write('h 1 s 1 -1 0\n') 	#{dev type} {id} {dev type} {id} {bandwidth} {delay} 
-		config_file.write('h 2 s 2 -1 0\n') 	#{dev type} {id} {dev type} {id} {bandwidth} {delay} 
-		config_file.write('h 3 s 3 -1 0\n') 	#{dev type} {id} {dev type} {id} {bandwidth} {delay} 
+		config_file.write('h 1 s 1 1 0\n') 	#{dev type} {id} {dev type} {id} {bandwidth} {delay} 
+		config_file.write('h 2 s 2 1 0\n') 	#{dev type} {id} {dev type} {id} {bandwidth} {delay} 
+		config_file.write('h 3 s 3 1 0\n') 	#{dev type} {id} {dev type} {id} {bandwidth} {delay} 
 		config_file.close()
 
 
@@ -50,12 +50,12 @@ if __name__ == '__main__':
 	h1, h2, h3 = net.get('h1', 'h2', 'h3')
 	s1, s2, s3 = net.get('s1', 's2', 's3')
 
-	h1.cmd('python3 link_delay_check.py 1 2 &')
+	'''h1.cmd('python3 link_delay_check.py 1 2 &')
 	h1.cmd('python3 link_delay_check.py 1 3 &')
 	h2.cmd('python3 link_delay_check.py 2 1 &')
 	h2.cmd('python3 link_delay_check.py 2 3 &')
 	h3.cmd('python3 link_delay_check.py 3 1 &')
-	h3.cmd('python3 link_delay_check.py 3 2 &')
+	h3.cmd('python3 link_delay_check.py 3 2 &')'''
 
 	net.interact()
 
