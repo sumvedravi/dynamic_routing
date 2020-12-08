@@ -12,9 +12,8 @@ from sklearn import preprocessing
 
 
 
-def check_portstats(links, graph):
+def check_portstats(stats, links, graph):
 	print("[info] check portstats")
-	stats = get_stats()
 	# get max bw per links
 	
 	# file merge
@@ -85,7 +84,7 @@ def check_portstats(links, graph):
 	# calculate efficiency per link
 	alpha = 1
 	beta = 2
-        gamma = 0.25
+	gamma = 0.25
 	for src in links:
 		for dst in links[src]:
 			if links[src][dst]['delay_norm'] != -1 and links[src][dst]['bw_norm'] != -1:

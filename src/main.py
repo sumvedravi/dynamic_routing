@@ -31,22 +31,32 @@ if __name__ == '__main__':
 	# first pass cycle after pingall is called ... then wipe connections to wait
 	# for new connections to come in
 	check_link(links, graph)	
-	check_portstats(links, graph)
-	check_flows(flow_paths)
+	stats = get_stats()
+	check_portstats(stats, links, graph)
+	check_flows(stats, flow_paths)
 	delete_all_connections(flow_paths)
 
+	
+	try:
+		while True:
+			# check link up and down
+			check_link(links, graph)
 
-	while True:
-		# check link up and down
-		check_link(links, graph)
+			# get port stats		
+			stats = get_stats()
+
+			# check delay and bw per link
+			check_portstats(stats, links, graph)
 		
-		# check delay and bw per link
-		check_portstats(links, graph)
-		
-		# check current flows 
-		check_flows(links, flow_paths)
+			# check current flows 
+			check_flows(stats, flow_paths)
 
-		# update paths and flows
-		dynamic_routing(flow_paths, links, graph)
+			# update paths and flows
+			dynamic_routing(links, flow_paths, graph)
 
-		sleep(1)
+			sleep(1)
+	
+	except KeyboardInterrupt:
+		pprint(links)
+		pprint('\n\n\n')
+		pprint(flow_paths)

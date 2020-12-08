@@ -13,13 +13,19 @@ from networkx.algorithms.shortest_paths.generic import all_shortest_paths
 
 # if new flow add to flow_paths so that the list of device_id's and flow_ids can be appended to
 # using this list of flow_ids the flows per device can be deleted and a new path with new flows can be added per device
-def check_flows(links, flow_paths):
+def check_flows(stats, flow_paths):
 	flows_dict = get_flows()
 	for device_flow in flows_dict:
 		for flow in device_flow['flows']:
 			flow_id = flow['id']
+			instruction_type = flow['treatment']['instructions'][0]['type']
+
+			if instruction_type != 'OUTPUT':
+				continue
+
 			flow_treatment_inst = flow['treatment']['instructions'][0]['port']
 			
+
 			if flow_treatment_inst == 'CONTROLLER':
 				continue
 
@@ -27,8 +33,10 @@ def check_flows(links, flow_paths):
 			src_mac = flow['selector']['criteria'][2]['mac']
 			dst_mac = flow['selector']['criteria'][1]['mac']
 
+			src_port = int(flow['selector']['criteria'][0]['port'])
+			dst_port = int(flow_treatment_inst)
 
-			cur_bw = int(links[src_mac][dst_mac]['bw'])
+			pktRx = int(stats[device_id][src_port]['pktRx'])
 
 			if src_mac not in flow_paths.keys():
 				flow_paths[src_mac] = {}
@@ -36,18 +44,29 @@ def check_flows(links, flow_paths):
 			if dst_mac not in flow_paths[src_mac].keys():
 				flow_paths[src_mac][dst_mac] = {}
 				flow_paths[src_mac][dst_mac]['path'] = []
-				flow_paths[src_mac][dst_mac]['flow_ids'] = {}
-				flow_paths[src_mac][dst_mac]['last_changed'] = -1
+				flow_paths[src_mac][dst_mac]['flow_ids'] = {}				
+				flow_paths[src_mac][dst_mac]['last_changed_sum'] = -1
 
 			if device_id not in flow_paths[src_mac][dst_mac]['flow_ids'].keys():
 				flow_paths[src_mac][dst_mac]['flow_ids'][device_id] = {}
-				flow_paths[src_mac][dst_mac]['flow_ids'][device_id]['packets'] = packets
+				flow_paths[src_mac][dst_mac]['flow_ids'][device_id]['pktRx'] = 0
 				flow_paths[src_mac][dst_mac]['flow_ids'][device_id]['last_changed'] = -1
-
-			if cur_bw == 0:
+			
+			# increment count if no change, else decrement (until 0)	
+			if pktRx == flow_paths[src_mac][dst_mac]['flow_ids'][device_id]['pktRx']:
 				flow_paths[src_mac][dst_mac]['flow_ids'][device_id]['last_changed'] += 1
-				flow_paths[src_mac][dst_mac]['last_changed'] += 1
+				flow_paths[src_mac][dst_mac]['last_changed_sum'] += 1
+			else:
+				last_changed = flow_paths[src_mac][dst_mac]['flow_ids'][device_id]['last_changed']
+				last_changed_sum = flow_paths[src_mac][dst_mac]['last_changed_sum'] 
 
+				flow_paths[src_mac][dst_mac]['flow_ids'][device_id]['last_changed'] = \
+					max(last_changed - 1, 0)
+				flow_paths[src_mac][dst_mac]['last_changed_sum'] -= \
+					max(last_changed_sum - 1, 0)
+				
+
+			flow_paths[src_mac][dst_mac]['flow_ids'][device_id]['pktRx'] = pktRx
 			flow_paths[src_mac][dst_mac]['flow_ids'][device_id]['flow_id'] = flow_id 
 
 
@@ -110,8 +129,8 @@ def delete_all_connections(flow_paths):
 	for src_mac in list(flow_paths.keys()):
 		for dst_mac in list(flow_paths[src_mac].keys()):
 			delete_all_flows(src_mac, dst_mac, flow_paths)
-			del flow_paths[src_mac][dst_mac]
-		del flow_paths[src_mac]
+			#del flow_paths[src_mac][dst_mac]
+		#del flow_paths[src_mac]
 
 # (1) update flow paths - get new flows if any 
 # (2) check if any path has 'died' - if yes then delete all associated flows per device
@@ -119,7 +138,7 @@ def delete_all_connections(flow_paths):
 # 	(a) if yes then delete all old flows per device
 #	(b) then add all new flows per device
 #	(c) get new flow ids that have been assigned in previous step
-def dynamic_routing(flow_paths, links, graph):
+def dynamic_routing(links, flow_paths, graph):
 	# must check_flow() prior to running this function
 
 	# a new flow will automatically use new_path since old_path will be = []
@@ -128,7 +147,7 @@ def dynamic_routing(flow_paths, links, graph):
 		for dst_mac in list(flow_paths[src_mac].keys()):
 			last_changed_sum = flow_paths[src_mac][dst_mac]['last_changed']
 
-			print('{} : {} - last_changed: {}'.format(src_mac, dst_mac, last_changed_sum)
+			print('{} : {} - last_changed: {}'.format(src_mac, dst_mac, last_changed_sum))
 
 			if last_changed_sum > 20:
 				delete_all_flows(src_mac, dst_mac, flow_paths)
