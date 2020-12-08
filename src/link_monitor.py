@@ -9,6 +9,7 @@ from pprint import pprint
 
 
 def check_link(links, graph):
+	print('[info] check links stats') 
 	# down method : mininet> link s1 s2 down /up
 	curr_links_status = get_links()
 	for src in links:
@@ -29,8 +30,10 @@ def check_link(links, graph):
 				# link down case
 				# 1 -> 0
 				if link_check == 0 and graph.has_edge(src, dst):
+					print('[info] ' + src + ' ' + dst + ' link down')
 					graph.remove_edge(src, dst)
 				# link up case
 				# 0 -> 1
 				if link_check == 1 and not graph.has_edge(src, dst):
+					print('[info] ' + src + ' ' + dst + ' link up')
 					graph.add_edge(src, dst, weight = 1.0)
