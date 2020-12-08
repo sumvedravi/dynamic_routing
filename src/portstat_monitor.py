@@ -13,6 +13,7 @@ from sklearn import preprocessing
 
 
 def check_portstats(links, graph):
+	print("[info] check portstats")
 	stats = get_stats()
 	# get max bw per links
 	
@@ -26,15 +27,15 @@ def check_portstats(links, graph):
 			for dst_dev in links[src_dev]:
 				if links[src_dev][dst_dev]['src_port'] == src_port:
 					max_bw = links[src_dev][dst_dev]['max_bw']
-					bw_per_sec = curr_bw - links[src_dev][dst_dev]['bw_before']
+					bw_per_sec = max(curr_bw - links[src_dev][dst_dev]['bw_before'], 0)
 					links[src_dev][dst_dev]['bw_before'] = curr_bw
-					links[src_dev][dst_dev]['bw'] = bw_per_sec
 					links[src_dev][dst_dev]['bw'] = bw_per_sec / max_bw
 					# onos portstat show only network devices' ports stats
 					# use h->s stats with the same value s->h
 					if dst_dev[0:2] != 'of':
 						links[dst_dev][src_dev]['bw_before'] = curr_bw
-						links[dst_dev][src_dev]['bw'] = bw_per_sec
+						links[dst_dev][src_dev]['bw'] = bw_per_sec / max_bw
+						print('[info] src ' + src_dev + ' dst ' + dst_dev + 'bw collected')
 	
 					# get delay	
 					# helper script : link_check_delay.py h1 s1
@@ -55,6 +56,8 @@ def check_portstats(links, graph):
 						if line_src_dev == src_dev and line_dst_dev == dst_dev:
 							links[dst_dev][src_dev]['delay'] = line_delay
 							links[src_dev][dst_dev]['delay'] = line_delay
+							print('[info] src ' + src_dev + ' dst ' + dst_dev + 'delay collected')
+							break
 
 	# caculate normalized value 
 	bw_norm = []
@@ -81,12 +84,13 @@ def check_portstats(links, graph):
 
 	# calculate efficiency per link
 	alpha = 1
-	beta = 1
+	beta = 2
+        gamma = 0.25
 	for src in links:
 		for dst in links[src]:
 			if links[src][dst]['delay_norm'] != -1 and links[src][dst]['bw_norm'] != -1:
-				links[src][dst]['efficency'] = alpha * links[src][dst]['bw_norm'] / \
-					links[src][dst]['link_flow_count'] + \
+				links[src][dst]['efficency'] = alpha * links[src][dst]['bw_norm'] * \
+					gamma * links[src][dst]['link_flow_count'] + \
 					beta * links[src][dst]['delay_norm']
-				print(links[src][dst]['efficency'])
+				print('[info] src ' + src +  ' dst ' + dst + ' link efficency updated')
 				graph[src][dst]['weight'] = links[src][dst]['efficency']	
