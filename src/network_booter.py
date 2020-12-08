@@ -30,8 +30,8 @@ class linear_topology(Topo):
 		config_file = open('links.config', 'w')
 
 		config_file.write('s 1 s 2 10 10\n') 	#{dev type} {id} {dev type} {id} {bandwidth} {delay} 
-		config_file.write('h 1 s 1 -1 0\n') 	#{dev type} {id} {dev type} {id} {bandwidth} {delay} 
-		config_file.write('h 2 s 2 -1 0\n') 	#{dev type} {id} {dev type} {id} {bandwidth} {delay} 
+		config_file.write('h 1 s 1 1 0\n') 	#{dev type} {id} {dev type} {id} {bandwidth} {delay} 
+		config_file.write('h 2 s 2 1 0\n') 	#{dev type} {id} {dev type} {id} {bandwidth} {delay} 
 
 		# update link delay dynamically
 		config_file.close()
