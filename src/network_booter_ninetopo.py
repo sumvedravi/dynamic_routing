@@ -69,6 +69,16 @@ class nine_topo(Topo):
 		config_file.write('s 7 s 8 ' + str(bw[14]) + " " + str(delay[14]) + '\n')
 		config_file.write('s 8 s 9 ' + str(bw[15]) + " " + str(delay[15]) + '\n')
 		
+		config_file.write('h 1 s 1 1 0\n')
+		config_file.write('h 2 s 2 1 0\n')
+		config_file.write('h 3 s 3 1 0\n')
+		config_file.write('h 4 s 4 1 0\n')
+		config_file.write('h 5 s 5 1 0\n')
+		config_file.write('h 6 s 6 1 0\n')
+		config_file.write('h 7 s 7 1 0\n')
+		config_file.write('h 8 s 8 1 0\n')
+		config_file.write('h 9 s 9 1 0\n')
+		
 		config_file.close()
 
 
