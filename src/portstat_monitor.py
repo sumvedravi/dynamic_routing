@@ -30,6 +30,7 @@ def check_portstats(links, graph):
 					bw_per_sec = max(curr_bw - links[src_dev][dst_dev]['bw_before'], 0)
 					links[src_dev][dst_dev]['bw_before'] = curr_bw
 					links[src_dev][dst_dev]['bw'] = bw_per_sec / max_bw
+					print('[info] src ' + src_dev + ' dst ' + dst_dev + ' bw collected')
 					# onos portstat show only network devices' ports stats
 					# use h->s stats with the same value s->h
 					if dst_dev[0:2] != 'of':
